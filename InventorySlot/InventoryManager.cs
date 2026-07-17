@@ -4,7 +4,7 @@ public class InventoryManager : MonoBehaviour
 {
     [SerializeField] public InvenSlot[]? slotList;
     [SerializeField] public SeedSlot[]? SeedSlotList;
-    [SerializeField] protected Item[] item;
+    [SerializeField] public Item[] item;
     public GameObject itemPrefab;
     public static InventoryManager Instance { get; private set; }
 

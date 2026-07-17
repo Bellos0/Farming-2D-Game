@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -6,16 +7,22 @@ public class FarmGridRepo : MonoBehaviour
 {
     [Header("tilemap references")]
     public Tilemap soilTile;
-    [SerializeField] Grid grid;
+    //[SerializeField] Grid grid;
 
     [Header("tile resource")]
     public TileBase? soilRaw;
     public TileBase? soilTiled;
     public TileBase? soilTileWatered;
 
+    [Space]
+    Item[] seedList;
+
     Dictionary<Vector2Int, CropPlotData> farmGrip = new Dictionary<Vector2Int, CropPlotData>();
 
-
+    private void Awake()
+    {
+        seedList = GameObject.FindAnyObjectByType<SeedInvenManager>().item ?? null;
+    }
     public void InteractWithPlot(Vector2Int gripPos, string tool)
     {
 
@@ -131,8 +138,18 @@ public class FarmGridRepo : MonoBehaviour
             Debug.Log("thua dat khong co cay");
             return false;
         }
+        int minRequire;
+        if (seedList != null)
+        {
 
-        int minRequire = 1;
+            minRequire = seedList.FirstOrDefault(seed => seed.id == plotData.plantedCropID).minToGrow;
+
+            //var min = seedList.Where(seed => seed.id >= 0)
+            //         .Select(seed => seed.minToGrow);
+            //int _min = int.Parse(min.ToString());
+        }
+        else minRequire = 0;
+
 
         double minPassed = TimeManager.instance.GetMinPassedSince(plotData.plantTImeAsString);
         if (minPassed > minRequire)
