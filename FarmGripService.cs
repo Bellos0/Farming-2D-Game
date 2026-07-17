@@ -16,12 +16,12 @@ public class FarmGripService : FarmGridRepo
         cellPlot.z = 0;
         if (TryPlanSeed(cellPlot, seedItem))
         {
-            Debug.Log("trong cay thanh cong");
+
             return true;
         }
         else
         {
-            Debug.Log("trong cay that bai");
+
             return false;
         }
     }
@@ -50,6 +50,23 @@ public class FarmGripService : FarmGridRepo
         else
         {
             InteractWithPlot(gripPos, toolHandle);
+        }
+    }
+
+    public bool isCropPlotHarvest(Vector3 screenPos)
+    {
+        Vector3 WorPos = ConvertFromUI_To_World(screenPos);
+        Vector3Int _WorPos = soilTile.WorldToCell(WorPos);
+        Vector2Int _WorPos2D = new Vector2Int(_WorPos.x, _WorPos.y);
+        if (Evaluate_CropPlot(_WorPos2D))
+        {
+            Debug.Log("thu hoach");
+            return true;
+        }
+        else
+        {
+            Debug.Log("chua thu hoach duoc || cha co cay nao de thu hoach");
+            return false;
         }
     }
 }

@@ -12,9 +12,11 @@ public class PlayerService : CreatureRepo
         cd = GetComponent<Collider2D>() ?? GetComponentInChildren<Collider2D>();
         anm = GetComponent<Animator>() ?? GetComponentInChildren<Animator>();
         transform.position = new Vector3(-11f, -2, 0);
+        Debug.Log($"gia tri khoi tao cua {curHoldingItem}");
     }
     void Update()
     {
+        Debug.Log($"gia tri khoi tao cua {curHoldingItem}");
         HandleFlip();
         Move(10f);
 
@@ -25,18 +27,40 @@ public class PlayerService : CreatureRepo
 
             curHoldingItem = SeedInvenManager.Instance.PickUpSeed(0);
         }
-        //2. click chuot de su dung item dang cam
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            curHoldingItem = new Item("liem");
+            curHoldingItem.Type = Item.ItemType.liem;
+        }
+        //2. click chuot trai  de su dung item dang cam
         if (Input.GetMouseButtonDown(0))
         {
 
             Vector3 mouUIPos = Input.mousePosition;
             mouUIPos.z = 0;
-            if (curHoldingItem != null && curHoldingItem.Type == Item.ItemType.seed)
+            if (curHoldingItem?.Type == Item.ItemType.seed)
             {
                 farmGripService.TrongCay(mouUIPos, curHoldingItem);
             }
+
             else
                 farmGripService.CheckClickFarmGrip(mouUIPos, "hoe");
+        }
+
+        // chuot phai click thu hoach
+        if (Input.GetMouseButtonDown(1))
+        {
+
+            Vector3 mouUIPos = Input.mousePosition;
+            mouUIPos.z = 0;
+
+            if (curHoldingItem?.Type == Item.ItemType.liem)
+            {
+                // farmGripService.TrongCay(mouUIPos, curHoldingItem);
+                farmGripService.isCropPlotHarvest(mouUIPos);
+            }
+
         }
     }
 

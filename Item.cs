@@ -17,8 +17,15 @@ public class Item : ScriptableObject
     public bool isWearable;
     public int minToGrow;
 
+    public Item(string? name)
+    {
+        if (string.IsNullOrEmpty(name))
+            return;
+        else itemName = name;
+    }
+
     public enum ItemType
     {
-        head, armor, pants, hanlde, wing, pet, plant, animal, animalfood, fertilizer, poisonPlant, seed, bin
+        head, armor, pants, hanlde, wing, pet, plant, animal, animalfood, fertilizer, poisonPlant, seed, bin, liem
     }
 }

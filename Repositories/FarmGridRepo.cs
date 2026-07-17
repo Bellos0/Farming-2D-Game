@@ -25,7 +25,7 @@ public class FarmGridRepo : MonoBehaviour
         {
             CropPlotData newPlot = new CropPlotData(gripPos);
             farmGrip.Add(gripPos, newPlot);
-            Debug.Log("add new plot");
+            Debug.Log("add new plot interact with plot");
         }
 
 
@@ -62,12 +62,11 @@ public class FarmGridRepo : MonoBehaviour
             // neu currentplot ma chua co thi tao moi luon.
             if (currentPlot == null)
             {
-
                 currentPlot = new CropPlotData(gridPos2D);
                 farmGrip.Add(gridPos2D, currentPlot);
             }
 
-            if (currentPlot.isCanPlant() && currentPlot.state == CropPlotData.PlotState.raw)
+            if (currentPlot.isCanPlant(currentPlot))
             //if (currentPlot.state == CropPlotData.PlotState.tilled && currentPlot.isCanPlant())
             {
                 currentPlot.PlanSeed(seedItem);
@@ -87,7 +86,7 @@ public class FarmGridRepo : MonoBehaviour
     /// </summary>
     /// <param name="gridPos"></param>
     /// <returns></returns>
-    private CropPlotData? GetSeedInSoil(Vector2Int gridPos)
+    private CropPlotData GetSeedInSoil(Vector2Int gridPos)
     {
         if (farmGrip.TryGetValue(gridPos, out CropPlotData plotData))
             return plotData;
@@ -106,7 +105,7 @@ public class FarmGridRepo : MonoBehaviour
         switch (plot.state)
         {
             case CropPlotData.PlotState.raw:
-                soilTile.SetTile(tilePos, soilRaw);
+                //soilTile.SetTile(tilePos, soilRaw);
                 Debug.Log("raw");
                 break;
             case CropPlotData.PlotState.tilled:
@@ -114,11 +113,40 @@ public class FarmGridRepo : MonoBehaviour
                 Debug.Log("tilled");
                 break;
             case CropPlotData.PlotState.watered:
-                soilTile.SetTile(tilePos, soilTileWatered);
+                //soilTile.SetTile(tilePos, soilTileWatered);
                 Debug.Log("watered");
                 break;
             default:
                 break;
+        }
+    }
+
+    public bool Evaluate_CropPlot(Vector2Int gridPos)
+    {
+
+        CropPlotData plotData = GetSeedInSoil(gridPos);
+        // kiem tra thong tin o dat, neu empty thi bo qua thoi
+        if (plotData == null || plotData.isCanPlant(plotData))
+        {
+            Debug.Log("thua dat khong co cay");
+            return false;
+        }
+
+        int minRequire = 1;
+
+        double minPassed = TimeManager.instance.GetMinPassedSince(plotData.plantTImeAsString);
+        if (minPassed > minRequire)
+        {
+            Debug.Log("co the thu haoch");
+            plotData.state = CropPlotData.PlotState.raw;
+            UpdateTileVisual(plotData);
+            return true;
+        }
+        else
+        {
+            double minLeft = minRequire - minPassed;
+            Debug.Log($"con {minLeft} moi thu hoach duoc");
+            return false;
         }
     }
 }

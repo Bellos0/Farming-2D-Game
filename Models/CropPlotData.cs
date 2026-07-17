@@ -25,9 +25,9 @@ public class CropPlotData
         plantTImeAsString = string.Empty;
     }
 
-    public bool isCanPlant()
+    public bool isCanPlant(CropPlotData plot)
     {
-        if (plantedCropID < 0)
+        if (plot.plantedCropID < 0)
         {
             return true;
         }
