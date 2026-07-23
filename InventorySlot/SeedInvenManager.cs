@@ -19,16 +19,16 @@ public class SeedInvenManager : InventoryManager
         }
     }
 
-    public Item? PickUpSeed(int select)
+    public ItemModels? PickUpSeed(int select)
     {
         Debug.Log("pick up seed ");
         if (select < 0)
         {
             return null;
         }
-        if (SeedSlotList[select]?.CurItem?.Item.Type == Item.ItemType.seed)
+        if (SeedSlotList[select]?.CurItem?.Item.Type == ItemModels.ItemType.seed)
         {
-            Item seedItem = SeedSlotList[select].CurItem.Item;
+            ItemModels seedItem = SeedSlotList[select].CurItem.Item;
             Debug.Log("return pickup seed");
             return seedItem;
         }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class NPCtalk : MonoBehaviour
+public class NPCtalk_Models : MonoBehaviour
 {
     public int npcID;
     public string npcName;

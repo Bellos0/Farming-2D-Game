@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class InvenItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     [Header("Item Info, link voi item.cs")]
-    Item item;
+    ItemModels item;
     int qty;
     [Space]
     [Header("Thuoc tinh tac dong den drag and drop event")]
@@ -15,7 +15,7 @@ public class InvenItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
     [SerializeField] Text? count;
     public Transform OriginalTrans { get => originalTrans; set => originalTrans = value; }
     public Image Image { get => image; set => image = value; }
-    public Item Item { get => item; set => item = value; }
+    public ItemModels Item { get => item; set => item = value; }
     public int Qty { get => qty; set => qty = value; }
 
 

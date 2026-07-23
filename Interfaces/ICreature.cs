@@ -7,5 +7,5 @@ interface ICreature
     void Flip();
 
     // san xuat ra san pham, kieu ga de trung, bo cho sua
-    void Production();
+    void Production(int id, UnityEngine.Vector3 prodPos);
 }

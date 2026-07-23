@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -15,26 +16,56 @@ public class FarmGridRepo : MonoBehaviour
     public TileBase? soilTileWatered;
 
     [Space]
-    Item[] seedList;
+    ItemModels[] seedList;
+    [Space]
+    public GameObject animalPrefab;
+    public ItemModels[] animalList;
+    Vector3 spawnPos_2leg;
+    Vector3 spawnPos_4leg;
 
-    Dictionary<Vector2Int, CropPlotData> farmGrip = new Dictionary<Vector2Int, CropPlotData>();
 
-    private void Awake()
+    public Vector3 SpawnPos_2leg { get => spawnPos_2leg; set => spawnPos_2leg = value; }
+    public Vector3 SpawnPos_4leg { get => spawnPos_4leg; set => spawnPos_4leg = value; }
+
+    public Dictionary<Vector2Int, CropPlotData> farmGrip = new Dictionary<Vector2Int, CropPlotData>();
+
+    protected virtual void Awake()
     {
         seedList = GameObject.FindAnyObjectByType<SeedInvenManager>().item ?? null;
+        SpawnPos_2leg = new Vector3(40, 5, 0);
+        SpawnPos_4leg = new Vector3(70, 5, 0);
     }
+
+    public void addAnimal(int id, Vector3 farmPos)
+    {
+        GameObject newAnimal = Instantiate(animalPrefab, farmPos, Quaternion.identity);
+        var animalData = animalList.FirstOrDefault(x => x.id == id);
+        if (animalData != null)
+        {
+            AnimalGeneral _newAnimal = newAnimal.GetComponent<AnimalGeneral>();
+            _newAnimal.animalModel = animalData;
+            _newAnimal.CreatureID = animalData.id;
+            _newAnimal.Name = animalData.itemName;
+            _newAnimal.Sprite.sprite = animalData.sprite;
+            _newAnimal.Type = CreatureRepo.CreatureType.animal;
+            _newAnimal.TimeSpawn = DateTime.Now.ToString("O");
+        }
+        //else return;
+    }
+
+
+
     public void InteractWithPlot(Vector2Int gripPos, string tool)
     {
-
 
         //2. kiem tra xem o dat da co trong list farmGrip chua
         if (!farmGrip.ContainsKey(gripPos))
         {
             CropPlotData newPlot = new CropPlotData(gripPos);
             farmGrip.Add(gripPos, newPlot);
-            Debug.Log("add new plot interact with plot");
-        }
+            // Save_and_Load.instance.addPlotList(newPlot);
 
+        }
 
         // lay du lieu o  dattu farmgrip de xu y
 
@@ -52,7 +83,7 @@ public class FarmGridRepo : MonoBehaviour
     }
 
 
-    public bool TryPlanSeed(Vector3Int worldPos, Item seedItem)
+    public bool TryPlanSeed(Vector3Int worldPos, ItemModels seedItem)
     {
         // khong co seeditem thi bo qua luon khoi phai trong trot gi nua
         if (seedItem == null) { return false; }
@@ -105,7 +136,7 @@ public class FarmGridRepo : MonoBehaviour
     /// hien thi cac tile tuong ung voi trang thai cua dat
     /// </summary>
     /// <param name="plot"></param>
-    private void UpdateTileVisual(CropPlotData plot)
+    public void UpdateTileVisual(CropPlotData plot)
     {
         Vector3Int tilePos = new Vector3Int(plot.gridPos.x, plot.gridPos.y, 0);
 

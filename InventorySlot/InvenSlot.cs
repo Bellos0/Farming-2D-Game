@@ -10,7 +10,7 @@ public class InvenSlot : MonoBehaviour, IDropHandler
 {
     [SerializeField] InvenItem curItem;
     [SerializeField] public Transform? visual_trans;
-    [SerializeField] public Item.ItemType ItemInSlotType;
+    [SerializeField] public ItemModels.ItemType ItemInSlotType;
 
 
 

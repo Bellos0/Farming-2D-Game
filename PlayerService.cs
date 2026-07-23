@@ -4,19 +4,18 @@ using UnityEngine;
 public class PlayerService : CreatureRepo
 {
     [SerializeField] FarmGripService? farmGripService;
-    Item curHoldingItem;
-    private void Awake()
+    ItemModels curHoldingItem;
+
+
+    protected override void Awake()
     {
-        isFlip = true;
-        rb = GetComponent<Rigidbody2D>() ?? GetComponentInChildren<Rigidbody2D>();
-        cd = GetComponent<Collider2D>() ?? GetComponentInChildren<Collider2D>();
-        anm = GetComponent<Animator>() ?? GetComponentInChildren<Animator>();
+        base.Awake();
         transform.position = new Vector3(-11f, -2, 0);
-        Debug.Log($"gia tri khoi tao cua {curHoldingItem}");
+
     }
     void Update()
     {
-        Debug.Log($"gia tri khoi tao cua {curHoldingItem}");
+
         HandleFlip();
         Move(10f);
 
@@ -30,8 +29,8 @@ public class PlayerService : CreatureRepo
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            curHoldingItem = new Item("liem");
-            curHoldingItem.Type = Item.ItemType.liem;
+            curHoldingItem = new ItemModels("liem");
+            curHoldingItem.Type = ItemModels.ItemType.liem;
         }
         //2. click chuot trai  de su dung item dang cam
         if (Input.GetMouseButtonDown(0))
@@ -39,7 +38,7 @@ public class PlayerService : CreatureRepo
 
             Vector3 mouUIPos = Input.mousePosition;
             mouUIPos.z = 0;
-            if (curHoldingItem?.Type == Item.ItemType.seed)
+            if (curHoldingItem?.Type == ItemModels.ItemType.seed)
             {
                 farmGripService.TrongCay(mouUIPos, curHoldingItem);
             }
@@ -55,7 +54,7 @@ public class PlayerService : CreatureRepo
             Vector3 mouUIPos = Input.mousePosition;
             mouUIPos.z = 0;
 
-            if (curHoldingItem?.Type == Item.ItemType.liem)
+            if (curHoldingItem?.Type == ItemModels.ItemType.liem)
             {
                 // farmGripService.TrongCay(mouUIPos, curHoldingItem);
                 farmGripService.isCropPlotHarvest(mouUIPos);
@@ -95,4 +94,5 @@ public class PlayerService : CreatureRepo
     public int playerID { get => CreatureID; set => CreatureID = value; }
     public string playerName { get => Name; set => Name = value; }
     public int playerLevel { get => Level; set => Level = value; }
+
 }

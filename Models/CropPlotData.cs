@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 
+[System.Serializable]
 public class CropPlotData
 {
     public Vector2Int gridPos; // toa do cua  dat trong grid
@@ -34,7 +35,7 @@ public class CropPlotData
         return false;
     }
 
-    public void PlanSeed(Item seedItem)
+    public void PlanSeed(ItemModels seedItem)
     {
         plantedCropID = seedItem.id;
 

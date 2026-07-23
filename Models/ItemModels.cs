@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Item", menuName = "Ingame Item")]
-public class Item : ScriptableObject
+[CreateAssetMenu(fileName = "New Item", menuName = "Ingame stuff")]
+public class ItemModels : ScriptableObject
 {
     [Header("Game play only")]
     public ItemType Type;
@@ -17,7 +17,7 @@ public class Item : ScriptableObject
     public bool isWearable;
     public int minToGrow;
 
-    public Item(string? name)
+    public ItemModels(string? name)
     {
         if (string.IsNullOrEmpty(name))
             return;
@@ -26,6 +26,6 @@ public class Item : ScriptableObject
 
     public enum ItemType
     {
-        head, armor, pants, hanlde, wing, pet, plant, animal, animalfood, fertilizer, poisonPlant, seed, bin, liem
+        head, armor, pants, hanlde, wing, pet, plant, animal, animalfood, fertilizer, poisonPlant, seed, bin, liem, animalProd
     }
 }
